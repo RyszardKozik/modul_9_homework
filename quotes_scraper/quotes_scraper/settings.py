@@ -62,9 +62,15 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    "quotes_scraper.pipelines.QuotesScraperPipeline": 300,
-#}
+ITEM_PIPELINES = {
+    "quotes_scraper.pipelines.JsonWriterPipeline": 300,
+    "quotes_scraper.pipelines.MongoPipeline": 400,
+    "quotes_scraper.pipelines.QuotesScraperPipeline": 500,
+}
+
+# MongoDB settings
+MONGO_URI = "mongodb://localhost:27017"
+MONGO_DATABASE = "quotes_db"
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html

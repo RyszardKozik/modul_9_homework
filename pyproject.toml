@@ -1,0 +1,12 @@
+[tool.poetry]
+name = "quotes_scraper"
+version = "0.1.0"
+description = "A Scrapy project for scraping quotes"
+authors = ["Your Name <your.email@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+scrapy = "^2.11.2"
+pymongo = "^4.3.0"
+
+[tool.poetry.dev-dependencies]

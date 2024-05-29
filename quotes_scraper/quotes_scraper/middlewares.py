@@ -10,9 +10,43 @@ from itemadapter import is_item, ItemAdapter
 
 
 class QuotesScraperSpiderMiddleware:
-    # Not all methods need to be defined. If a method is not defined,
-    # scrapy acts as if the spider middleware does not modify the
-    # passed objects.
+    def process_item(self, item, spider):
+        # Create an adapter for the item
+        adapter = ItemAdapter(item)
+        
+        # Validate the item fields
+        if not self.is_valid_item(adapter):
+            logging.warning(f"Invalid item found: {item}")
+            raise DropItem(f"Missing fields in item: {item}")
+        
+        # Clean the item fields
+        self.clean_item(adapter)
+        
+        # Process or save the item
+        self.save_item(adapter)
+        
+        return item
+    
+    def is_valid_item(self, adapter):
+        # Example validation: Ensure 'quote' and 'author' fields are present
+        required_fields = ['quote', 'author']
+        for field in required_fields:
+            if not adapter.get(field):
+                return False
+        return True
+    
+    def clean_item(self, adapter):
+        # Example cleaning: Strip whitespace from 'quote' and 'author' fields
+        fields_to_clean = ['quote', 'author']
+        for field in fields_to_clean:
+            value = adapter.get(field)
+            if value:
+                adapter[field] = value.strip()
+    
+    def save_item(self, adapter):
+        # Example saving: Print the item (this could be replaced with database saving logic)
+        print(f"Saving item: {adapter.asdict()}")
+    
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -101,3 +135,5 @@ class QuotesScraperDownloaderMiddleware:
 
     def spider_opened(self, spider):
         spider.logger.info("Spider opened: %s" % spider.name)
+
+    
