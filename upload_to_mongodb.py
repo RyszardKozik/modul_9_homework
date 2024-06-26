@@ -8,11 +8,11 @@ quotes_collection = db['quotes']
 authors_collection = db['authors']
 
 # Load data from quotes.json
-with open('C:/Project/myProject/modul_9_homework/quotes_scraper/quotes_scraper/quotes.json', encoding='utf-8') as quotes_file:
+with open('/quotes_scraper/quotes_scraper/quotes.json', encoding='utf-8') as quotes_file:
     quotes_data = json.load(quotes_file)
 
 # Load data from authors.json
-with open('C:/Project/myProject/modul_9_homework/quotes_scraper/quotes_scraper/authors.json', encoding='utf-8') as authors_file:
+with open('/quotes_scraper/quotes_scraper/authors.json', encoding='utf-8') as authors_file:
     authors_data = json.load(authors_file)
 
 # Insert data into MongoDB
