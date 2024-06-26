@@ -13,6 +13,12 @@ class QuotesSpider(scrapy.Spider):
                 'author': quote.css('small.author::text').get(),
                 'tags': quote.css('div.tags a.tag::text').getall(),
             }
+
+        # Follow pagination links
+        next_page = response.css('li.next a::attr(href)').get()
+        if next_page is not None:
+            yield response.follow(next_page, self.parse)
+
 class AuthorsSpider(scrapy.Spider):
     name = 'authors'
     start_urls = ['http://quotes.toscrape.com/']
@@ -23,11 +29,6 @@ class AuthorsSpider(scrapy.Spider):
         for link in author_links:
             yield response.follow(link, self.parse_author)
             
-            # Extract author URLs and follow them to get author information
-            author_urls = quote.css('span a::attr(href)').getall()
-            for author_url in author_urls:
-                yield response.follow(author_url, callback=self.parse_author)
-
         # Follow pagination links
         next_page = response.css('li.next a::attr(href)').get()
         if next_page is not None:
