@@ -13,7 +13,16 @@ class QuotesSpider(scrapy.Spider):
                 'author': quote.css('small.author::text').get(),
                 'tags': quote.css('div.tags a.tag::text').getall(),
             }
+class AuthorsSpider(scrapy.Spider):
+    name = 'authors'
+    start_urls = ['http://quotes.toscrape.com/']
 
+    def parse(self, response):
+        # Follow links to author pages
+        author_links = response.css('small.author + a::attr(href)').getall()
+        for link in author_links:
+            yield response.follow(link, self.parse_author)
+            
             # Extract author URLs and follow them to get author information
             author_urls = quote.css('span a::attr(href)').getall()
             for author_url in author_urls:
